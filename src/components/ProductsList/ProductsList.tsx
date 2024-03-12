@@ -1,7 +1,9 @@
 import React from "react";
-import { Product } from "../../hooks/useCarts";
-import List from "@mui/material/List";
-import ListItemText from "@mui/material/ListItemText";
+import { Product } from "../../types";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { DisplayDetails } from "../DisplayDetails/DisplayDetails";
 import {
@@ -63,31 +65,40 @@ export const ProductsList: React.FC<{
   };
 
   return (
-    <List>
+    <Box>
       <h2>Products list</h2>
-      <Line options={options} data={data} />
-      {products.map((product) => (
-        <ListItemText key={product.id}>
-          <DisplayDetails text="Product:" value={product.title} />
-          <DisplayDetails text="Price:" value={product.price} />
-          <DisplayDetails text="Total:" value={product.total} />
-          <DisplayDetails
-            text="Discount percentage:"
-            value={product.discountPercentage}
-          />
-          <DisplayDetails
-            text="Discounted price:"
-            value={product.discountedPrice}
-          />
-          <CardMedia
-            component="img"
-            src={product.thumbnail}
-            sx={{
-              maxWidth: 200,
-            }}
-          />
-        </ListItemText>
-      ))}
-    </List>
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <Line options={options} data={data} />
+        </Grid>
+        <Grid item xs={6} />
+        {products.map((product) => (
+          <Grid item xs={2} key={product.id}>
+            <Card variant="outlined">
+              <CardContent>
+                <DisplayDetails text="Product:" value={product.title} />
+                <DisplayDetails text="Price:" value={product.price} />
+                <DisplayDetails text="Total:" value={product.total} />
+                <DisplayDetails
+                  text="Discount percentage:"
+                  value={product.discountPercentage}
+                />
+                <DisplayDetails
+                  text="Discounted price:"
+                  value={product.discountedPrice}
+                />
+              </CardContent>
+              <CardMedia
+                component="img"
+                src={product.thumbnail}
+                sx={{
+                  maxWidth: 200,
+                }}
+              />
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
   );
 };

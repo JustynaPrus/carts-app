@@ -1,15 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { useCarts } from "../../hooks/useCarts";
 import { Cart } from "../Cart/Cart";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 
-const url = "https://dummyjson.com/carts";
-
 export const CartsList: React.FC = () => {
-  const { carts, isLoading, isError } = useCarts(url);
-  const [editedCartsList, setEditedCartsList]  = useState(carts);
+  const { carts, deleteData, isLoading, isError } = useCarts();
 
   return (
     <Box component="section" sx={{ p: 2 }}>
@@ -18,7 +15,7 @@ export const CartsList: React.FC = () => {
       {!isLoading && (
         <List>
           {carts.map((cart) => (
-            <Cart cart={cart} key={cart.id} />
+            <Cart cart={cart} key={cart.id} deleteCart={deleteData} />
           ))}
         </List>
       )}

@@ -1,52 +1,21 @@
 import { useState, useCallback, useEffect } from "react";
-import axios from "axios";
+import { Carts, CartType } from "../types";
+import { getCarts, deleteCart, addCart } from "../api/cartsApi";
 
-export type Product = {
-  id: number;
-  title: string;
-  price: number;
-  quantity: number;
-  total: number;
-  discountPercentage: number;
-  discountedPrice: number;
-  thumbnail: string;
-};
-
-export type CartType = {
-  id: number;
-  products: Product[];
-  total: number;
-  discountedTotal: number;
-  userId: number;
-  totalProducts: number;
-  totalQuantity: number;
-};
-
-export type Carts = {
-  carts: CartType[];
-  total: number;
-  skip: number;
-  limit: number;
-};
-const getCarts = async (url: string): Promise<Carts> => {
-  const { data } = await axios.get<Carts>(url);
-  return data;
-};
-
-export const useCarts = (
-  url: string
-): {
+export const useCarts = (): {
   carts: CartType[];
   isError: boolean;
   isLoading: boolean;
+  deleteData: (id: number) => void;
+  addData: (cart: CartType) => void;
 } => {
   const [cartList, setCarts] = useState<Carts>();
   const [isLoading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
 
-  const dataHandler = useCallback(async (url: string) => {
+  const dataHandler = useCallback(async () => {
     try {
-      const carts = await getCarts(url);
+      const carts = await getCarts();
       setCarts(carts);
     } catch (error) {
       setError(true);
@@ -55,11 +24,29 @@ export const useCarts = (
 
   useEffect(() => {
     setLoading(true);
-    dataHandler(url);
+    dataHandler();
     setLoading(false);
-  }, [dataHandler, url]);
+  }, [dataHandler]);
+
+  const deleteData = useCallback(async (id: number) => {
+    try {
+      const cart = deleteCart(id);
+      console.log(cart);
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  const addData = useCallback(async (cart: CartType) => {
+    try {
+      const createdCart = addCart(cart);
+      console.log(createdCart);
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
 
   const carts = cartList?.carts || [];
 
-  return { carts, isLoading, isError };
+  return { carts, isLoading, isError, deleteData, addData };
 };
