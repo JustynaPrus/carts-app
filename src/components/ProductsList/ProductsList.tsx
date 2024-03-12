@@ -1,21 +1,32 @@
 import React from "react";
 import { Product } from "../../hooks/useCarts";
+import List from "@mui/material/List";
+import ListItemText from "@mui/material/ListItemText";
+import CardMedia from "@mui/material/CardMedia";
+import { DisplayDetails } from "../DisplayDetails/DisplayDetails";
 
 export const ProductsList: React.FC<{
   products: Product[];
 }> = ({ products }) => {
   return (
-    <ul>
+    <List>
+      <h2>Products list</h2>
       {products.map((product) => (
-        <li key={product.id}>
-          <p>{product.title}</p>
-          <p>{product.price}</p>
-          <p>{product.total}</p>
-          <p>{product.discountPercentage}</p>
-          <p>{product.discountedPrice}</p>
-          {/* <image src={product.thumbnail}/> */}
-        </li>
+        <ListItemText key={product.id}>
+          <DisplayDetails text="Product:" value={product.title} />
+          <DisplayDetails text="Price:" value={product.price} />
+          <DisplayDetails text="Total:" value={product.total} />
+          <DisplayDetails
+            text="Discount percentage:"
+            value={product.discountPercentage}
+          />
+          <DisplayDetails
+            text="Discounted price:"
+            value={product.discountedPrice}
+          />
+          <CardMedia component="img" src={product.thumbnail} />
+        </ListItemText>
       ))}
-    </ul>
+    </List>
   );
 };

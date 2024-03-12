@@ -8,7 +8,7 @@ export const DisplayDetails: React.FC<{
   return (
     <Stack direction="row" alignItems="center" spacing={1}>
       <p>{text}</p>
-      <p>{value}</p>
+      <b>{value}</b>
     </Stack>
   );
 };
